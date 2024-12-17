@@ -58,6 +58,7 @@ def predict_qchat():
         input_array = np.array(input_features).reshape(1, -1)
         input_scaled = qchat_scaler.transform(input_array)
         input_selected = qchat_selector.transform(input_scaled)
+        prediction_result = int(qchat_model.predict(input_selected)[0])
         
         # Get prediction
         probabilities = qchat_model.predict_proba(input_selected)[0]
@@ -70,6 +71,7 @@ def predict_qchat():
         return jsonify({
             'assessment_type': 'Q-Chat-10',
             'autism_probability': autism_probability,
+            'result': prediction_result,
             'risk_level': risk_level,
             'confidence_score': confidence_score,
             'status': 'success'
@@ -109,7 +111,7 @@ def predict_aq10():
         input_array = np.array(input_features).reshape(1, -1)
         input_scaled = aq10_scaler.transform(input_array)
         input_selected = aq10_selector.transform(input_scaled)
-        
+        prediction_result = int(aq10_model.predict(input_selected)[0])
         # Get prediction
         probabilities = aq10_model.predict_proba(input_selected)[0]
         autism_probability = float(probabilities[1])
@@ -121,6 +123,7 @@ def predict_aq10():
         return jsonify({
             'assessment_type': 'AQ-10',
             'autism_probability': autism_probability,
+            'result': prediction_result,
             'risk_level': risk_level,
             'confidence_score': confidence_score,
             'status': 'success'
